@@ -15,7 +15,9 @@ public class GameController : MonoBehaviour {
     private int kills;
     private int killsStagesClear;
 
-    private int dpsBought = 0;
+    private double clickInShop = 1;
+    private double priceClick = 10;
+
     private double dps = 0;
     private double dpsInShop = 1;
     private double priceDPS = 10;
@@ -34,6 +36,7 @@ public class GameController : MonoBehaviour {
     [SerializeField] private TMP_Text timerText;
 
     [SerializeField] private TMP_Text dpsInShopText;
+    [SerializeField] private TMP_Text clickInShopText;
 
     [SerializeField] private GameObject back;
     [SerializeField] private GameObject forward;
@@ -41,15 +44,14 @@ public class GameController : MonoBehaviour {
 
     private Vector3 enemyScale;
     public float shrinkScale = 0.95f;
-    private int counterHit = 1;
 
     public Image healthBar;
     public Image timerBar;
 
     public Sprite[] spriteList;
     public void Start() {
+        damagePerClick = 1;
         enemyScale = enemy.gameObject.transform.localScale;
-        damagePerClick = 30;
         stage = 1;
         stageMax = 1;
         maxHP = 10;
@@ -86,11 +88,13 @@ public class GameController : MonoBehaviour {
         DPSText.text = dps.ToString("F2") + "DPS   " ;
 
         dpsInShopText.text = dpsInShop.ToString("F2") + "DPS / " + priceDPS.ToString("F2") + " $";
-
+        clickInShopText.text = clickInShop.ToString("F2") + "Click / " + priceClick.ToString("F2") + " $ ";
         moneyText.text = "$" + money.ToString("F2");
         damagePerClickText.text = damagePerClick.ToString() + " Click Damage";
 
-        
+
+
+
         healthText.text = health.ToString("F2") + "/" + maxHP + "HP";
 
         healthBar.fillAmount = (float)(health / maxHP);
@@ -107,14 +111,14 @@ public class GameController : MonoBehaviour {
 
     public void Hit() {
         health -= damagePerClick;
-        counterHit++;
+
         float currentSizePercentage = (float)(health / maxHP)*0.2f + 0.8f;
         enemy.gameObject.transform.localScale = enemyScale * currentSizePercentage;
         if (health <= 0) Kills();
     }
 
     public void Back() {
-        counterHit = 1;
+
         enemy.gameObject.transform.localScale = enemyScale;
         if ( stage > 1 ) stage--;
         kills = 0;
@@ -126,7 +130,7 @@ public class GameController : MonoBehaviour {
     }
 
     public void Forward() {
-        counterHit = 1;
+
         enemy.gameObject.transform.localScale = enemyScale;
         if ( stage < stageMax ) stage++;
         SetMaxHP();
@@ -136,7 +140,7 @@ public class GameController : MonoBehaviour {
     }
 
     public void Kills() {
-        counterHit = 1;
+
         enemy.gameObject.transform.localScale = enemyScale;
         
         money += maxHP / 3f ;
@@ -151,7 +155,7 @@ public class GameController : MonoBehaviour {
         SetSprite();
         health = maxHP;
     }
-
+    //Set HP Of mob per stage
     public void SetMaxHP() {
         if (stage % 5 == 0) maxHP = 10 * stage + maxHP + 200;
         else maxHP = 10 * stage;
@@ -175,10 +179,10 @@ public class GameController : MonoBehaviour {
     private float dpsInShop = 1;*/
 
     public void buyDPS() {
-        if ( money > priceDPS ) {
+        if ( money >= priceDPS ) {
             money -= priceDPS;
             dps += dpsInShop;
-            dpsBought++;
+
 
             priceDPS *= 1.2;
             dpsInShop *= 1.4;
@@ -190,8 +194,14 @@ public class GameController : MonoBehaviour {
         if (health <= 0) Kills();   
     }
 
-    public void buyClick() { 
-        
+    public void buyClick() {
+        if ( money >= priceClick ) {
+            money -= priceClick;
+            damagePerClick += clickInShop;
+
+            priceClick *= 1.2;
+            clickInShop *= 1.4;
+        }
     }
 
 }
