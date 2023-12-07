@@ -1,3 +1,5 @@
+using JetBrains.Annotations;
+using System.Security.Cryptography;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,14 +15,25 @@ public class GameController : MonoBehaviour {
     private int kills;
     private int killsStagesClear;
 
+    private int dpsBought = 0;
+    private double dps = 0;
+    private double dpsInShop = 1;
+    private double priceDPS = 10;
+    //Frequence à laquelle le DPS est appliqué sur la seconde, par exemple pour une valeur de 1/100, en 1 seconde le mob va perdre dps/100 en 1/100 seconde
+    private float frequencyOfDamage = 100f ;
+
     private float timer;
     private float timeToKillBoss = 30 ;
+
     [SerializeField] private TMP_Text moneyText;
     [SerializeField] private TMP_Text damagePerClickText;
+    [SerializeField] private TMP_Text DPSText;
     [SerializeField] private TMP_Text stageText;
     [SerializeField] private TMP_Text killsText;
     [SerializeField] private TMP_Text healthText;
     [SerializeField] private TMP_Text timerText;
+
+    [SerializeField] private TMP_Text dpsInShopText;
 
     [SerializeField] private GameObject back;
     [SerializeField] private GameObject forward;
@@ -42,6 +55,7 @@ public class GameController : MonoBehaviour {
         maxHP = 10;
         health = maxHP;
         killsStagesClear = 10;
+        InvokeRepeating("damageDPS", 1f/frequencyOfDamage, 1f / frequencyOfDamage);
     }
     public void Update() {
             // Boss Stages
@@ -69,8 +83,12 @@ public class GameController : MonoBehaviour {
             stageText.text = "Stage - " + stage;
         }
 
+        DPSText.text = dps.ToString("F2") + "DPS   " ;
+
+        dpsInShopText.text = dpsInShop.ToString("F2") + "DPS / " + priceDPS.ToString("F2") + " $";
+
         moneyText.text = "$" + money.ToString("F2");
-        damagePerClickText.text = damagePerClick.ToString() + " Damage / Click";
+        damagePerClickText.text = damagePerClick.ToString() + " Click Damage";
 
         
         healthText.text = health.ToString("F2") + "/" + maxHP + "HP";
@@ -120,7 +138,8 @@ public class GameController : MonoBehaviour {
     public void Kills() {
         counterHit = 1;
         enemy.gameObject.transform.localScale = enemyScale;
-        money += maxHP ;
+        
+        money += maxHP / 3f ;
         if (stage == stageMax) kills++;
 
         if (kills >= killsStagesClear) {
@@ -149,6 +168,30 @@ public class GameController : MonoBehaviour {
         }
 
 
+    }
+
+    /*    private int dpsBought = 0;
+    private float dps = 0;
+    private float dpsInShop = 1;*/
+
+    public void buyDPS() {
+        if ( money > priceDPS ) {
+            money -= priceDPS;
+            dps += dpsInShop;
+            dpsBought++;
+
+            priceDPS *= 1.2;
+            dpsInShop *= 1.4;
+        }
+    }
+
+    public void damageDPS() {
+        health -= dps / frequencyOfDamage;
+        if (health <= 0) Kills();   
+    }
+
+    public void buyClick() { 
+        
     }
 
 }
