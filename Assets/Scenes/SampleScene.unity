@@ -1213,6 +1213,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf2840435980f6f408fe137baf0a68c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  killSoundEffect: {fileID: 3211054571619483425, guid: d427254327ef4b3478232c1289c70f49, type: 3}
   moneyText: {fileID: 1578918541}
   damagePerClickText: {fileID: 1278762767}
   DPSText: {fileID: 1212656017}

@@ -27,6 +27,8 @@ public class GameController : MonoBehaviour {
     private float timer;
     private float timeToKillBoss = 30 ;
 
+    [SerializeField] private AudioSource killSoundEffect;
+
     [SerializeField] private TMP_Text moneyText;
     [SerializeField] private TMP_Text damagePerClickText;
     [SerializeField] private TMP_Text DPSText;
@@ -110,8 +112,7 @@ public class GameController : MonoBehaviour {
 
     public void Hit() {
         health -= damagePerClick;
-
-        float currentSizePercentage = (float)(health / maxHP)*0.1f + 0.9f;
+        float currentSizePercentage = (float)(health / maxHP) * 0.1f + 0.9f;
         enemy.gameObject.transform.localScale = enemyScale * currentSizePercentage;
         if (health <= 0) Kills();
     }
@@ -139,7 +140,7 @@ public class GameController : MonoBehaviour {
     }
 
     public void Kills() {
-
+        playKillSoundEffect();
         enemy.gameObject.transform.localScale = enemyScale;
         
         money += maxHP / 3f ;
@@ -204,6 +205,11 @@ public class GameController : MonoBehaviour {
             clickInShop *= 1.4;
         }
     }
+
+    public void playKillSoundEffect() {
+        killSoundEffect.Play();
+    }
+
 
 }
 
