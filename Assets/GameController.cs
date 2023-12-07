@@ -43,7 +43,6 @@ public class GameController : MonoBehaviour {
     [SerializeField] private GameObject enemy;
 
     private Vector3 enemyScale;
-    public float shrinkScale = 0.95f;
 
     public Image healthBar;
     public Image timerBar;
@@ -112,7 +111,7 @@ public class GameController : MonoBehaviour {
     public void Hit() {
         health -= damagePerClick;
 
-        float currentSizePercentage = (float)(health / maxHP)*0.2f + 0.8f;
+        float currentSizePercentage = (float)(health / maxHP)*0.1f + 0.9f;
         enemy.gameObject.transform.localScale = enemyScale * currentSizePercentage;
         if (health <= 0) Kills();
     }
@@ -155,7 +154,7 @@ public class GameController : MonoBehaviour {
         SetSprite();
         health = maxHP;
     }
-    //Set HP Of mob per stage
+    //Set HP Of mob per stage   
     public void SetMaxHP() {
         if (stage % 5 == 0) maxHP = 10 * stage + maxHP + 200;
         else maxHP = 10 * stage;
@@ -191,6 +190,8 @@ public class GameController : MonoBehaviour {
 
     public void damageDPS() {
         health -= dps / frequencyOfDamage;
+        float currentSizePercentage = (float)(health / maxHP) * 0.1f + 0.9f;
+        enemy.gameObject.transform.localScale = enemyScale * currentSizePercentage;
         if (health <= 0) Kills();   
     }
 

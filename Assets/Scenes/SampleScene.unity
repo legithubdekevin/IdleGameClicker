@@ -521,7 +521,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6d633aa32fc07794aaf17f23a3c61441, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9686abf8607ad684c93a7f29fccb106b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1221,10 +1221,10 @@ MonoBehaviour:
   healthText: {fileID: 1891766682}
   timerText: {fileID: 1117107814}
   dpsInShopText: {fileID: 1768529980}
+  clickInShopText: {fileID: 1970893710}
   back: {fileID: 890437713}
   forward: {fileID: 555783408}
   enemy: {fileID: 324688390}
-  shrinkScale: 0.8
   healthBar: {fileID: 402354427}
   timerBar: {fileID: 1273593024}
   spriteList:
@@ -2018,7 +2018,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1513539858}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 870518302}
+        m_TargetAssemblyTypeName: GameController, Assembly-CSharp
+        m_MethodName: buyClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1513539858
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2929,8 +2941,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
