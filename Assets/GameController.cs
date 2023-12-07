@@ -3,29 +3,28 @@ using UnityEngine;
 using UnityEngine.UI;
 public class GameController : MonoBehaviour {
 
-    public double money;
-    public double damagePerClick;
-    public double health;
-    public double maxHP;
+    private double money;
+    private double damagePerClick;
+    private double health;
+    private double maxHP;
 
-    public int stage;
-    public int stageMax;
-    public int kills;
-    public int killsStagesClear;
+    private int stage;
+    private int stageMax;
+    private int kills;
+    private int killsStagesClear;
 
-    public float timer;
-    public float timerMax;
+    private float timer;
+    private float timeToKillBoss = 30 ;
+    [SerializeField] private TMP_Text moneyText;
+    [SerializeField] private TMP_Text damagePerClickText;
+    [SerializeField] private TMP_Text stageText;
+    [SerializeField] private TMP_Text killsText;
+    [SerializeField] private TMP_Text healthText;
+    [SerializeField] private TMP_Text timerText;
 
-    public TMP_Text moneyText;
-    public TMP_Text damagePerClickText;
-    public TMP_Text stageText;
-    public TMP_Text killsText;
-    public TMP_Text healthText;
-    public TMP_Text timerText;
-
-    public GameObject back;
-    public GameObject forward;
-    public GameObject enemy;
+    [SerializeField] private GameObject back;
+    [SerializeField] private GameObject forward;
+    [SerializeField] private GameObject enemy;
 
     private Vector3 enemyScale;
     public float shrinkScale = 0.95f;
@@ -45,20 +44,21 @@ public class GameController : MonoBehaviour {
         killsStagesClear = 10;
     }
     public void Update() {
-            
+            // Boss Stages
         if (stage % 5 == 0) {
             timerBar.gameObject.SetActive(true);
             timerText.gameObject.SetActive(true);
             killsStagesClear = 1;
             killsText.text = kills.ToString() + "/" + killsStagesClear + "Kills";
             stageText.text = "Boss Stage - " + stage;
-            timerText.text = timer.ToString("F2");             
+            timerText.text = timer.ToString("F2") + "/" + timeToKillBoss.ToString("F0");             
                 timer -= Time.deltaTime;
             if (timer <= 0 ) {
                 stage--;
                 SetMaxHP();
                 health = maxHP;
             }
+            //Normal Stages
         } else {
             timerBar.gameObject.SetActive(false);   
             timerText.gameObject.SetActive(false);  
