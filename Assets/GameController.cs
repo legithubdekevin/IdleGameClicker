@@ -185,8 +185,8 @@ public class GameController : MonoBehaviour {
             dps += dpsInShop;
 
 
-            priceDPS *= 1.2;
-            dpsInShop *= 1.4;
+            priceDPS *= 1.3;
+            dpsInShop *= 1.2;
         }
     }
 
@@ -202,8 +202,8 @@ public class GameController : MonoBehaviour {
             money -= priceClick;
             damagePerClick += clickInShop;
 
-            priceClick *= 1.2;
-            clickInShop *= 1.4;
+            priceClick *= 1.3;
+            clickInShop *= 1.2;
         }
     }
 
