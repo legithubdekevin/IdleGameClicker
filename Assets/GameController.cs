@@ -14,7 +14,7 @@ public class GameController : MonoBehaviour {
     private int stageMax;
     private int kills;
     private int killsStagesClear;
-
+    private int ascensionLvl = 0;
     private double clickInShop = 1;
     private double priceClick = 10;
 
@@ -26,7 +26,7 @@ public class GameController : MonoBehaviour {
 
     private float timer;
     private float timeToKillBoss = 30 ;
-
+   
     [SerializeField] private AudioSource killSoundEffect;
     [SerializeField] private AudioSource clickSoundEffect;
     [SerializeField] private TMP_Text moneyText;
@@ -37,12 +37,16 @@ public class GameController : MonoBehaviour {
     [SerializeField] private TMP_Text healthText;
     [SerializeField] private TMP_Text timerText;
 
+    [SerializeField] private TMP_Text ascensionLvlText;
+    [SerializeField] private TMP_Text ascensionShopText;
+
     [SerializeField] private TMP_Text dpsInShopText;
     [SerializeField] private TMP_Text clickInShopText;
 
     [SerializeField] private GameObject back;
     [SerializeField] private GameObject forward;
     [SerializeField] private GameObject enemy;
+    [SerializeField] private GameObject ascension;
 
     private Vector3 enemyScale;
 
@@ -164,11 +168,11 @@ public class GameController : MonoBehaviour {
     public void SetSprite() {
         if (stage % 5 != 0) {
             int randomNumber = UnityEngine.Random.Range(0, 16);
-            UnityEngine.UI.Image enemyImage = enemy.GetComponent<Image>();
+            Image enemyImage = enemy.GetComponent<Image>();
             enemyImage.sprite = spriteList[randomNumber];
         } else {
             int randomNumber = UnityEngine.Random.Range(16, 19);
-            UnityEngine.UI.Image enemyImage = enemy.GetComponent<Image>();
+            Image enemyImage = enemy.GetComponent<Image>();
             enemyImage.sprite = spriteList[randomNumber];
         }
 
@@ -207,13 +211,15 @@ public class GameController : MonoBehaviour {
         }
     }
 
+    public void ascensionUp() { 
+    }
     public void playKillSoundEffect() {
         killSoundEffect.Play();
     }
     public void playClickSoundEffect() {
         clickSoundEffect.Play();
     }
-
+    
 
 }
 
