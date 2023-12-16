@@ -1,8 +1,11 @@
 using JetBrains.Annotations;
+using System.Net;
 using System.Security.Cryptography;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements.Experimental;
+
 public class GameController : MonoBehaviour {
 
     private double money;
@@ -13,20 +16,22 @@ public class GameController : MonoBehaviour {
     private int stage;
     private int stageMax;
     private int kills;
-    private int killsStagesClear;
+    private int killsStagesClear = 10;
     private int ascensionLvl = 0;
-    private double clickInShop = 1;
-    private double priceClick = 10;
+    private int multiplicatorDPS = 1;
+    private int multiplicatorClick = 1;
+    private double clickInShop;
+    private double priceClick;
 
-    private double dps = 0;
+    private double dps;
     private double dpsInShop = 1;
     private double priceDPS = 10;
     //Frequence à laquelle le DPS est appliqué sur la seconde, par exemple pour une valeur de 1/100, en 1 seconde le mob va perdre dps/100 en 1/100 seconde
-    private float frequencyOfDamage = 100f ;
+    private float frequencyOfDamage = 100f;
 
     private float timer;
-    private float timeToKillBoss = 30 ;
-   
+    private float timeToKillBoss = 30;
+
     [SerializeField] private AudioSource killSoundEffect;
     [SerializeField] private AudioSource clickSoundEffect;
     [SerializeField] private TMP_Text moneyText;
@@ -38,8 +43,6 @@ public class GameController : MonoBehaviour {
     [SerializeField] private TMP_Text timerText;
 
     [SerializeField] private TMP_Text ascensionLvlText;
-    [SerializeField] private TMP_Text ascensionShopText;
-
     [SerializeField] private TMP_Text dpsInShopText;
     [SerializeField] private TMP_Text clickInShopText;
 
@@ -47,7 +50,6 @@ public class GameController : MonoBehaviour {
     [SerializeField] private GameObject forward;
     [SerializeField] private GameObject enemy;
     [SerializeField] private GameObject ascension;
-
     private Vector3 enemyScale;
 
     public Image healthBar;
@@ -55,34 +57,34 @@ public class GameController : MonoBehaviour {
 
     public Sprite[] spriteList;
     public void Start() {
-        damagePerClick = 1;
-        enemyScale = enemy.gameObject.transform.localScale;
-        stage = 1;
-        stageMax = 1;
-        maxHP = 10;
-        health = maxHP;
-        killsStagesClear = 10;
-        InvokeRepeating("damageDPS", 1f/frequencyOfDamage, 1f / frequencyOfDamage);
+        setVariable();
+        InvokeRepeating("damageDPS", 1f / frequencyOfDamage, 1f / frequencyOfDamage);
     }
     public void Update() {
-            // Boss Stages
+
+        if ((ascensionLvl + 1) * 50 <= stage) {
+            ascension.gameObject.SetActive(true);
+        } else {
+            ascension.gameObject.SetActive(false);
+        }
+        // Boss Stages
         if (stage % 5 == 0) {
             timerBar.gameObject.SetActive(true);
             timerText.gameObject.SetActive(true);
             killsStagesClear = 1;
             killsText.text = kills.ToString() + "/" + killsStagesClear + "Kills";
             stageText.text = "Boss Stage - " + stage;
-            timerText.text = timer.ToString("F2") + "/" + timeToKillBoss.ToString("F0");             
-                timer -= Time.deltaTime;
-            if (timer <= 0 ) {
+            timerText.text = timer.ToString("F2") + "/" + timeToKillBoss.ToString("F0");
+            timer -= Time.deltaTime;
+            if (timer <= 0) {
                 stage--;
                 SetMaxHP();
                 health = maxHP;
             }
             //Normal Stages
         } else {
-            timerBar.gameObject.SetActive(false);   
-            timerText.gameObject.SetActive(false);  
+            timerBar.gameObject.SetActive(false);
+            timerText.gameObject.SetActive(false);
             timer = 30;
             killsStagesClear = 10;
             maxHP = 10 * stage;
@@ -90,7 +92,7 @@ public class GameController : MonoBehaviour {
             stageText.text = "Stage - " + stage;
         }
 
-        DPSText.text = dps.ToString("F2") + "DPS   " ;
+        DPSText.text = dps.ToString("F2") + "DPS   ";
 
         dpsInShopText.text = dpsInShop.ToString("F2") + "DPS / " + priceDPS.ToString("F2") + " $";
         clickInShopText.text = clickInShop.ToString("F2") + "Click / " + priceClick.ToString("F2") + " $ ";
@@ -99,22 +101,24 @@ public class GameController : MonoBehaviour {
 
 
 
-
+        ascensionLvlText.text = "Ascension lvl"  +  ascensionLvl.ToString();
         healthText.text = health.ToString("F2") + "/" + maxHP + "HP";
 
         healthBar.fillAmount = (float)(health / maxHP);
 
-        if ( stage > 1 ) back.gameObject.SetActive(true);
+        if (stage > 1) back.gameObject.SetActive(true);
         else back.gameObject.SetActive(false);
 
-        if ( stage != stageMax )  forward.gameObject.SetActive(true); 
+        if (stage != stageMax) forward.gameObject.SetActive(true);
         else forward.gameObject.SetActive(false);
 
 
-        
+
     }
 
     public void Hit() {
+
+
         health -= damagePerClick;
         playClickSoundEffect();
         float currentSizePercentage = (float)(health / maxHP) * 0.1f + 0.9f;
@@ -125,7 +129,7 @@ public class GameController : MonoBehaviour {
     public void Back() {
 
         enemy.gameObject.transform.localScale = enemyScale;
-        if ( stage > 1 ) stage--;
+        if (stage > 1) stage--;
         kills = 0;
 
 
@@ -137,7 +141,7 @@ public class GameController : MonoBehaviour {
     public void Forward() {
 
         enemy.gameObject.transform.localScale = enemyScale;
-        if ( stage < stageMax ) stage++;
+        if (stage < stageMax) stage++;
         SetMaxHP();
         SetSprite();
         health = maxHP;
@@ -147,8 +151,8 @@ public class GameController : MonoBehaviour {
     public void Kills() {
         playKillSoundEffect();
         enemy.gameObject.transform.localScale = enemyScale;
-        
-        money += maxHP / 3f ;
+
+        money += maxHP / 3f;
         if (stage == stageMax) kills++;
 
         if (kills >= killsStagesClear) {
@@ -179,14 +183,10 @@ public class GameController : MonoBehaviour {
 
     }
 
-    /*    private int dpsBought = 0;
-    private float dps = 0;
-    private float dpsInShop = 1;*/
-
     public void buyDPS() {
-        if ( money >= priceDPS ) {
+        if (money >= priceDPS) {
             money -= priceDPS;
-            dps += dpsInShop;
+            dps += dpsInShop * multiplicatorDPS;
 
 
             priceDPS *= 1.3;
@@ -198,20 +198,39 @@ public class GameController : MonoBehaviour {
         health -= dps / frequencyOfDamage;
         float currentSizePercentage = (float)(health / maxHP) * 0.1f + 0.9f;
         enemy.gameObject.transform.localScale = enemyScale * currentSizePercentage;
-        if (health <= 0) Kills();   
+        if (health <= 0) Kills();
     }
 
     public void buyClick() {
-        if ( money >= priceClick ) {
+        if (money >= priceClick) {
             money -= priceClick;
-            damagePerClick += clickInShop;
+            damagePerClick += clickInShop * multiplicatorClick;
 
             priceClick *= 1.3;
             clickInShop *= 1.2;
         }
     }
 
-    public void ascensionUp() { 
+    public void ascensionUp() {
+        ascensionLvl += 1;
+        if (Random.Range(0, 2) == 1) multiplicatorClick *= 2;
+        else multiplicatorDPS *= 2;
+        setVariable();
+
+    }
+
+    public void setVariable() {
+        clickInShop = 1;
+        priceClick = 10;
+        dps = 0;
+        priceDPS = 10;
+        dpsInShop = 1;
+        damagePerClick = 1 * multiplicatorClick;
+        enemyScale = enemy.gameObject.transform.localScale;
+        stage = 1;
+        stageMax = 1;
+        maxHP = 10;
+        health = maxHP;
     }
     public void playKillSoundEffect() {
         killSoundEffect.Play();
@@ -219,7 +238,6 @@ public class GameController : MonoBehaviour {
     public void playClickSoundEffect() {
         clickSoundEffect.Play();
     }
-    
 
 }
 
