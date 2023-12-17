@@ -153,7 +153,7 @@ public class GameController : MonoBehaviour {
         playKillSoundEffect();
         enemy.gameObject.transform.localScale = enemyScale;
 
-        money += maxHP*10000000000 / 3f;
+        money += maxHP / 3f;
         if (stage == stageMax) kills++;
 
         if (kills >= killsStagesClear) {
@@ -172,11 +172,11 @@ public class GameController : MonoBehaviour {
     }
     public void SetSprite() {
         if (stage % 5 != 0) {
-            int randomNumber = UnityEngine.Random.Range(0, 16);
+            int randomNumber = Random.Range(0, 16);
             Image enemyImage = enemy.GetComponent<Image>();
             enemyImage.sprite = spriteList[randomNumber];
         } else {
-            int randomNumber = UnityEngine.Random.Range(16, 19);
+            int randomNumber = Random.Range(16, 19);
             Image enemyImage = enemy.GetComponent<Image>();
             enemyImage.sprite = spriteList[randomNumber];
         }
@@ -233,6 +233,7 @@ public class GameController : MonoBehaviour {
         stageMax = 1;
         maxHP = 10;
         health = maxHP;
+        kills = 0;
     }
     public void playKillSoundEffect() {
         killSoundEffect.Play();
