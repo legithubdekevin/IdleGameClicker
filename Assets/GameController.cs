@@ -50,6 +50,8 @@ public class GameController : MonoBehaviour {
     [SerializeField] private GameObject forward;
     [SerializeField] private GameObject enemy;
     [SerializeField] private GameObject ascension;
+
+    [SerializeField] private Animator transition;
     private Vector3 enemyScale;
 
     public Image healthBar;
@@ -57,6 +59,7 @@ public class GameController : MonoBehaviour {
 
     public Sprite[] spriteList;
     public void Start() {
+        transition.SetTrigger("FadeOut");
         setVariable();
         InvokeRepeating("damageDPS", 1f / frequencyOfDamage, 1f / frequencyOfDamage);
     }
@@ -97,7 +100,7 @@ public class GameController : MonoBehaviour {
         dpsInShopText.text = dpsInShop.ToString("F2") + "DPS / " + priceDPS.ToString("F2") + " $";
         clickInShopText.text = clickInShop.ToString("F2") + "Click / " + priceClick.ToString("F2") + " $ ";
         moneyText.text = "$" + money.ToString("F2");
-        damagePerClickText.text = damagePerClick.ToString() + " Click Damage";
+        damagePerClickText.text = damagePerClick.ToString("F2") + " Click Damage";
 
 
 
@@ -117,8 +120,6 @@ public class GameController : MonoBehaviour {
     }
 
     public void Hit() {
-
-
         health -= damagePerClick;
         playClickSoundEffect();
         float currentSizePercentage = (float)(health / maxHP) * 0.1f + 0.9f;
@@ -152,7 +153,7 @@ public class GameController : MonoBehaviour {
         playKillSoundEffect();
         enemy.gameObject.transform.localScale = enemyScale;
 
-        money += maxHP / 3f;
+        money += maxHP*10000000000 / 3f;
         if (stage == stageMax) kills++;
 
         if (kills >= killsStagesClear) {
@@ -215,6 +216,7 @@ public class GameController : MonoBehaviour {
         ascensionLvl += 1;
         if (Random.Range(0, 2) == 1) multiplicatorClick *= 2;
         else multiplicatorDPS *= 2;
+        transition.SetTrigger("FadeIn");
         setVariable();
 
     }
