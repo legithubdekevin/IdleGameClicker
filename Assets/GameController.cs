@@ -4,7 +4,9 @@ using System.Security.Cryptography;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements.Experimental;
+using System.Collections;
 
 public class GameController : MonoBehaviour {
 
@@ -153,7 +155,7 @@ public class GameController : MonoBehaviour {
         playKillSoundEffect();
         enemy.gameObject.transform.localScale = enemyScale;
 
-        money += maxHP / 3f;
+        money += maxHP*4000000 / 3f;
         if (stage == stageMax) kills++;
 
         if (kills >= killsStagesClear) {
@@ -216,9 +218,14 @@ public class GameController : MonoBehaviour {
         ascensionLvl += 1;
         if (Random.Range(0, 2) == 1) multiplicatorClick *= 2;
         else multiplicatorDPS *= 2;
-        transition.SetTrigger("FadeIn");
+        StartCoroutine(loadNextScene());
         setVariable();
 
+    }
+
+    public IEnumerator loadNextScene() {
+        transition.SetTrigger("FadeIn");
+        yield return new WaitForSeconds(0.5f);
     }
 
     public void setVariable() {
