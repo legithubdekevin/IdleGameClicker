@@ -155,7 +155,7 @@ public class GameController : MonoBehaviour {
         playKillSoundEffect();
         enemy.gameObject.transform.localScale = enemyScale;
 
-        money += maxHP*4000000 / 3f;
+        money += maxHP / 3f;
         if (stage == stageMax) kills++;
 
         if (kills >= killsStagesClear) {

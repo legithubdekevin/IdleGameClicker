@@ -946,7 +946,7 @@ GameObject:
   - component: {fileID: 441330159}
   - component: {fileID: 441330158}
   - component: {fileID: 441330157}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Transition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1006,10 +1006,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1719,6 +1719,7 @@ MonoBehaviour:
   forward: {fileID: 555783408}
   enemy: {fileID: 324688390}
   ascension: {fileID: 61038860}
+  transition: {fileID: 441330157}
   healthBar: {fileID: 402354427}
   timerBar: {fileID: 1273593024}
   spriteList:
@@ -3277,7 +3278,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -7}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1768529980
@@ -4055,7 +4056,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -7}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1970893710
